@@ -1,6 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Home = () => {
+  const [themeColor, setThemeColor] = useState(undefined);
+
+  // themeColor（状態）が変更されるたびに実行
+  useEffect(() => {
+    if (themeColor !== undefined) {
+      // true = ダークモード
+      if (themeColor) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        window.localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        window.localStorage.setItem('theme', 'light');
+      }
+    }
+  }, [themeColor])
+
+  const handleToggle = (e) => {
+    setThemeColor(e.target.checked);
+  };
+
   return (
     <div>
       <div className='container'>
@@ -9,7 +29,7 @@ const Home = () => {
           <div>
             <form action='#'>
               <label className='switch'>
-                <input type="checkbox" />
+                <input type="checkbox" onChange={handleToggle} />
                 <span className='slider'></span>
               </label>
             </form>
